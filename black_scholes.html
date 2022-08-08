@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2022-08-07 Sun 13:12 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>"Black-Scholes Option Valuation"</title>
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+</style>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">"Black-Scholes Option Valuation"</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgf2113c5">1. The Black-Scholes World</a></li>
+<li><a href="#org635e95e">2. Black-Scholes Formula:</a></li>
+<li><a href="#org83339c3">3. Where is the Expected Return?</a></li>
+<li><a href="#org3b4200e">4. Intuitive Grasp of the Formula</a></li>
+<li><a href="#orgae23dec">5. Black-Scholes App</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgf2113c5" class="outline-2">
+<h2 id="orgf2113c5"><span class="section-number-2">1.</span> The Black-Scholes World</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+If we assume that stock options exist in a world where&#x2026;
+</p>
+
+<ul class="org-ul">
+<li>&#x2026;the market is complete, meaning given a stock and a bond we can replicate call and put options,</li>
+<li>the risk-free interest rate and stock price volatility are both constant,</li>
+<li>and stock prices follow a lognormal distribution&#x2026;</li>
+</ul>
+
+<p>
+&#x2026;then we can value European Call Options on Non-Dividend Paying Stocks using the Black-Scholes Formula shown on the next slide.
+</p>
+</div>
+</div>
+
+
+
+<div id="outline-container-org635e95e" class="outline-2">
+<h2 id="org635e95e"><span class="section-number-2">2.</span> Black-Scholes Formula:</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+\(C_0 = S_0N(d_1) - Xe^{-rT}N(d_2)\)
+</p>
+
+<style>
+#col {
+-moz-column-count: 2;
+-webkit-column-count: 2;
+column-count: 2;
+}
+</style>
+
+<!-- <div class ="columns-2"> -->
+<div id="col">
+
+<p>
+<b>where</b>
+</p>
+
+<p>
+\(d_1 = \frac{ln(\frac{S_0}{X}) + (r+\frac{\sigma^2}{2})T}{\sigma\sqrt(T)}\)
+</p>
+
+<p>
+\(d_2 = d_1 - \sigma\sqrt(T)\)
+</p>
+
+<ul class="org-ul">
+<li>\(C_0\) is the value of the call option at time 0.</li>
+
+<li>\(S_0\):  the value of the underlying stock at time 0.</li>
+
+<li>\(N()\):  the cumulative standard normal density function (NORMSDIST() in Excel)</li>
+
+<li>\(X\):  the exercise or strike price.</li>
+
+<li>\(r\): the risk-free interest rate (annualized).</li>
+
+<li>\(T\): the time until option expiration in years.</li>
+
+<li>\(\sigma\): the annualized standard deviations of log returns.</li>
+
+<li>\(e\) and \(ln\) are the exponential and natural log functions respectively (EXP() and LN() in Excel).</li>
+</ul>
+
+</div>
+</div>
+</div>
+
+<div id="outline-container-org83339c3" class="outline-2">
+<h2 id="org83339c3"><span class="section-number-2">3.</span> Where is the Expected Return?</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+The groundbreaking feature of the Black-Scholes model, as opposed to earlier attempts at option valuation, is that it does not require the  stock's expected return as an input.
+</p>
+
+<ul class="org-ul">
+<li>This is important, because we don't know the stock's expected return.</li>
+
+<li>The idea is that we don't need the expected return because we are going to hedge out risk from the stock's returns (whatever they are).</li>
+
+<li>You can also view the expected return as being already included in the stock's price, which is determined by the stock's level of risk and return.</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-org3b4200e" class="outline-2">
+<h2 id="org3b4200e"><span class="section-number-2">4.</span> Intuitive Grasp of the Formula</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Looking at the option value formula: \(C_0 = S_0N(d_1) - Xe^{-rT}N(d_2)\)
+</p>
+
+<p>
+You can look at the \(N(d)\) terms as the likelihood that the option will be exercised at expiration (that \(S_T > X\)).
+</p>
+
+<ul class="org-ul">
+<li>If both \(N(d)\) terms are close to 1, then the option's value is about \(S_0 - Xe^{-rT}\) or the present stock price minus the present value of the strike price. This makes sense given that at expiration (if \(S_0 > X\)) the option pays \(S_T - X\).</li>
+
+<li>If the option has little chance of being exercised (that is, both $N(d)$s are near 0), then the option will have a near \$0 value.</li>
+
+<li>For other values in the 0 to 1 range, the call value can be viewed as the payoff \(S_0 - Xe^{-rT}\) weighted by the probability that the call is exercised.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgae23dec" class="outline-2">
+<h2 id="orgae23dec"><span class="section-number-2">5.</span> Black-Scholes App</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+The following app will calculate the Black-Scholes European call option price for a set of given inputs.
+</p>
+
+<ul class="org-ul">
+<li>If the stock pays a dividend, then input the stock's annualized expected dividend yield.</li>
+
+<li>The calculator will adjust for the dividend by lowering the stock price by the present value of the expected dividend.  In other words the stock price used in the formula will be: \(S_0e^{-\delta T}\) where \(\delta\) is the expected annualized dividend yield.  This assumes dividends are paid <b>continuously</b> throughout the year.  We'll discuss dividend adjustments later in the presentation.</li>
+
+<li>You can use the app to check your own calculations.  To help, you can also choose to see \(d1\) and \(d2\) to also check those values.</li>
+</ul>
+
+
+<div class="org-src-container">
+<pre class="src src-R">```{r, echo=<span style="color: #ECBE7B;">FALSE</span>, message=<span style="color: #ECBE7B;">FALSE</span>, warning=<span style="color: #ECBE7B;">FALSE</span>}
+#{{{
+sidebarLayout(
+    sidebarPanel(
+
+        div(style="height: 75px;", numericInput("Stock", "Present Stock Price", min = .01, max = 2000, value = 50, step = .05)),
+        div(style="height: 75px;", numericInput("Vol", "Annualized Volatility", min = .01, max = 20, value = 0.20, step = .01)),
+        div(style="height: 75px;", numericInput("Strike", "Strike Price", min = .01, max = 1, value = 52, step = .05)),
+        div(style="height: 75px;", numericInput("Rf", "Risk Free Rate", min = 0.001, max = 0.5, value = 0.01, step = .001)),
+        div(style="height: 75px;", numericInput("Time", "Years to Expiration", min = 0.01, max = 50, value = 1, step = .01)),
+        div(style="height: 75px;", numericInput("Div", "Dividend Yield", min = 0, max = 1, value = 0, step = .01))#,
+        ## div(style="height: 75px;", radioButtons("out", "Value to See", choices = list("Call Price" = 1, "d1" = 2, "d2" = 3), selected = 1)) 
+                  ),
+    mainPanel(
+
+        renderPlot({
+            stock <span style="color: #a9a1e1;">&lt;-</span> input$Stock
+            vol <span style="color: #a9a1e1;">&lt;-</span> input$Vol
+            strike <span style="color: #a9a1e1;">&lt;-</span> input$Strike
+            rf <span style="color: #a9a1e1;">&lt;-</span> input$Rf
+            time <span style="color: #a9a1e1;">&lt;-</span> input$Time
+            div <span style="color: #a9a1e1;">&lt;-</span> input$Div
+            ## adjustment for dividends
+            stock <span style="color: #a9a1e1;">&lt;-</span> stock * exp(-div * time)
+
+
+            d1 <span style="color: #a9a1e1;">&lt;-</span> (log(stock/strike) + (rf + (vol * vol) / 2) * time) / (vol * sqrt(time))
+            d2 <span style="color: #a9a1e1;">&lt;-</span> d1 - vol * sqrt(time)
+            C <span style="color: #a9a1e1;">&lt;-</span> stock * pnorm(d1) - strike * exp(-rf * time) * pnorm(d2)
+
+            #             <span style="color: #51afef;">if</span> (input$out == 1){
+                plot(0, ylim = c(0,1), xlim = c(0,1), type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", main = "Black-Scholes Call Option Valuation")
+                text(x = 0.5, y = 0.5, labels = paste0("Call Premium = $", round(C, 2)), cex = 3)
+                ## text(x = 0.1, y = 0.95, labels = "Call Price", cex = 2)
+                text(x = 0.5, y = 0.3, labels = paste("d1 = ", round(d1, 5)))
+                text(x = 0.5, y = 0.2, labels = paste("d2 = ", round(d2, 5)))
+                #             } <span style="color: #51afef;">else</span> {
+                #                 <span style="color: #51afef;">if</span> (input$out == 2){
+                #                     plot(0, ylim = c(0,1), xlim = c(0,1), type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", main = "Black-Scholes Call Option Valuation")
+                #                 text(x = 0.5, y = 0.5, labels = paste(round(d1, 5)), cex = 5)
+                #                 text(x = 0.03, y = 0.95, labels = "d1", cex = 2)
+                #             } <span style="color: #51afef;">else</span> {
+                #                 plot(0, ylim = c(0,1), xlim = c(0,1), type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", main = "Black-Scholes Call Option Valuation")
+                #                 text(x = 0.5, y = 0.5, labels = paste(round(d2, 5)), cex = 5)
+                #                 text(x = 0.03, y = 0.95, labels = "d2", cex = 2)
+                #             }
+                #             }
+
+        })
+)
+              )
+#}}}
+```
+</pre>
+</div>
+
+
+
+<p>
+## How Do We Calculate the Input Parameters
+</p>
+
+<p>
+The present stock price is easily observable, and the exercise price and time to maturity are aspects of the option contract. The parameters which are less easily observed are:
+</p>
+
+<ul class="org-ul">
+<li>Risk-free rate</li>
+<li>Dividend yield</li>
+<li>Volatility</li>
+</ul>
+
+
+
+<p>
+## The Risk Free Rate
+</p>
+
+<p>
+The risk free rate should be the annualized continuously-compounded rate on a default free security <b>with the same maturity</b> as the expiration data of the option.
+</p>
+
+<ul class="org-ul">
+<li>For example, if the option expired in 3 months, you can use the continuously compounded annual rate for a 3-month Treasury Bill.</li>
+</ul>
+
+
+
+<p>
+## Dividends and Stock and Option Prices
+</p>
+
+<p>
+Remember that a stock price is adjusted downward by the dividend amount when the dividend is paid.  For example, say before a \$1 dividend is paid the stock is \$50.  Immediately after the dividend is paid the stock's price will be \$49 (otherwise there would be an arbitrage).
+</p>
+
+<ul class="org-ul">
+<li>However, stock option contract terms (such as the strike price) are not adjusted for cash dividends, or stock dividends under 10\%.</li>
+
+<li>So paying dividend reduces the value of a call option and increases the value of a put.</li>
+
+<li>Note, because firms often increase or decrease their dividend payments, we can only estimate an <b>expected</b> dividend yield or payment.</li>
+</ul>
+
+
+
+<p>
+## Dividend Adjustments
+</p>
+
+<p>
+In the Black-Scholes world (where the option is European) we can reduce the stock price by the present value of all the dividends <b>during the life of the option</b>.
+</p>
+
+<ul class="org-ul">
+<li>The discounting is done from the ex-dividend date to the present.</li>
+
+<li>We can use the risk-free rate, though this assumes we are certain about the amount of the dividend payment.</li>
+
+<li>Note, we only include the dividend to be paid during the life of the option.  So if the option expires in a month and the next dividend paid by the stock is in two months, we do <b>not</b> include a dividend adjustment.</li>
+</ul>
+
+
+
+<p>
+## Volatility
+</p>
+
+<p>
+Volatility (the standard deviation of log-returns) is not directly observable, and it is the toughest input to determine.  Two common ways to estimate volatility:
+</p>
+
+<ul class="org-ul">
+<li>Use historical data</li>
+<li>Extracting volatility from other options</li>
+</ul>
+
+
+<p>
+<b><b>Important Note:</b></b> Volatility is assumed to be constant in the Black-Scholes model.  This is why you can estimate volatility over a historical period and use that volatility over a later period.  But this assumption was made for mathematical ease, and it is not realistic.
+</p>
+
+<p>
+So in the model's world, using historical volatility is fine, even though in the real world it is a poor approach. 
+</p>
+
+
+
+<p>
+## Historical Data
+</p>
+
+<p>
+We can use historical stock price data to calculate continuously compounded returns (log-returns).  We can then take the standard deviation of these returns (using <b>STDEV()</b> in Excel, for example) and annualize the standard deviation, affording an estimate of annual volatility.
+</p>
+
+<ul class="org-ul">
+<li>To do so, we must choose our sampling frequency (daily, weekly, or monthly prices) and the amount of history to use.</li>
+
+<li>Daily prices over the last 100 days are commonly used.</li>
+</ul>
+
+
+
+<p>
+## Annualizing the Standard Deviation
+</p>
+
+<p>
+Once we have the standard deviation of log returns, we must annualize it.  To do so we use the equation below, where \(\sigma_a\) and \(sigma_p\) are the annual and sample period standard deviations:
+</p>
+
+<p>
+\(\sigma_a = \sigma_p \sqrt{\#\ periods\ in\ a\ year}\)
+</p>
+
+<ul class="org-ul">
+<li>For example, if we are using 100 days of daily price data, and the standard deviation over those days is 0.05\%, then:  \(\sigma_a = 0.05\% (252) = 12.6\%\)</li>
+
+<li>Above we assume 252 trading days in a year.</li>
+</ul>
+
+
+
+<p>
+## Interactive App
+</p>
+
+<ul class="org-ul">
+<li>The following app will calculate annualized historical volatility for any stock and choice of sampling frequency and length of history.</li>
+
+<li>Change the date range and see if the historical volatility changes &#x2013; remember Black-Scholes assumes constant volatility.</li>
+</ul>
+
+
+
+<p>
+##
+</p>
+
+<p>
+```{r, echo=FALSE, message=FALSE, warning=FALSE, error = FALSE}
+#{{{
+inputPanel(
+    textInput(inputId = "ticker2", label = "Stock Ticker", value = "XOM"),
+    dateRangeInput("range", "Date Range", start = "2015-01-05", end = Sys.Date())
+    )
+renderPlot({
+    devtools::install<sub>github</sub>("joshuaulrich/quantmod", ref = "157<sub>yahoo</sub><sub>502</sub>")
+    library(quantmod)
+    validate(
+        need(input$ticker2 != "", "Input a valid US stock ticker.")
+        )
+    stock2 &lt;- getSymbols(input$ticker2, from = input$range[1], to = input$range[2], auto.assign = FALSE)
+    returns &lt;- Delt(Ad(stock2), type = 'log')[-1]
+    annSD &lt;- sd(returns) * sqrt(252) * 100
+</p>
+
+<p>
+    plot(0, ylim = c(0,1), xlim = c(0,1), type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", main = "Annualized Historical Volatility")
+    text(x = 0.5, y = 0.5, labels = paste(round(annSD, 2), "%", sep = ""), cex = 5)
+})
+#}}}
+```
+</p>
+
+
+
+<p>
+## Extracting Volatility from Other Options
+</p>
+
+<p>
+We can also extract volatility from similar options and use that number as the volatility for our options.  
+</p>
+
+<ul class="org-ul">
+<li>This is often referred to as 'calibrating to the market'.</li>
+
+<li>It has the benefit of being a forward-looking measure, which will take into account market expectations of the volatility from future events.  Historical volatility, on the other hand, only looks backwards.</li>
+</ul>
+
+
+
+<p>
+## Implied vs Historical Volatility
+</p>
+
+<p>
+This distinction is particularly important if there is an event which will take place during the life of the option, which hasn't happened historically.
+</p>
+
+<ul class="org-ul">
+<li>Consider, for example, what the consequences might be if you own options expiring in 3 months on Chevron (CVX) and in one month Congress will vote on legislation to allow unfettered exports of crude oil from the U.S. (exports are now substantially limited).</li>
+</ul>
+
+
+
+<p>
+## Implied Volatility
+</p>
+
+<p>
+We can extract a volatility estimate from traded options by plugging the option price into the Black-Scholes formula and solving for volatility. This volatility estimate is called the option's 'implied volatility'.
+</p>
+
+
+
+
+<p>
+##
+</p>
+
+<p>
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#{{{
+sidebarLayout(
+    sidebarPanel(
+</p>
+
+<p>
+    div(style="height: 75px;", numericInput("Stock1", "Present Stock Price", min = .01, max = 2000, value = 50, step = .05)),
+    div(style="height: 75px;", numericInput("Option1", "Call Option Premium", min = .01, max = 20, value = 2, step = .01)),
+    div(style="height: 75px;", numericInput("Strike1", "Strike Price", min = .01, max = 1, value = 52, step = .05)),
+    div(style="height: 75px;", numericInput("Rf1", "Risk Free Rate", min = 0.001, max = 0.5, value = 0.01, step = .001)),
+    div(style="height: 75px;", numericInput("Time1", "Years to Expiration", min = 0.01, max = 50, value = 1, step = .01)),
+    div(style="height: 75px;", numericInput("Div1", "Dividend Yield", min = 0, max = 1, value = 0, step = .01))
+	      ),
+mainPanel(
+</p>
+
+<p>
+renderPlot({
+</p>
+
+<p>
+stock1 &lt;- input$Stock1
+option1 &lt;- input$Option1
+strike1 &lt;- input$Strike1
+rf1 &lt;- input$Rf1
+time1 &lt;- input$Time1
+div1 &lt;- input$Div1
+## adjustment for dividends
+stock1 &lt;- stock1 * exp(-1 * div1 * time1)
+</p>
+
+<p>
+call.func &lt;- function(vol){ (stock1 * pnorm((log(stock1/strike1) + (rf1 + (vol * vol) / 2) * time1) / (vol * sqrt(time1))) - strike1 * exp(-rf1 * time1) * pnorm((log(stock1/strike1) + (rf1 + (vol * vol) / 2) * time1) / (vol * sqrt(time1)) - vol * sqrt(time1)) - option1)<sup>2</sup> }
+</p>
+
+<p>
+## L-BFGS-B seems to work.  Brent did not.  
+result &lt;- optim(par = 0.1, fn = call.func, method = "L-BFGS-B", lower = 0, upper = 1000)
+</p>
+
+<p>
+## already annual 
+vol.solution &lt;- result$par * 100
+</p>
+
+<p>
+plot(0, ylim = c(0,1), xlim = c(0,1), type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", main = "Annualized Implied Volatility")
+text(x = 0.5, y = 0.5, labels = paste(round(vol.solution, 2), "%", sep = ""), cex = 5)
+</p>
+
+<p>
+        })
+)
+	      )
+#}}}
+```
+</p>
+
+
+
+<p>
+## But What about Put Options?
+</p>
+
+<p>
+So far we have only looked at call options, but can Black-Scholes also value put options?
+</p>
+
+<ul class="org-ul">
+<li>Yes, we can write an explicit formula for the Black-Scholes value of a European put option.</li>
+
+<li>However it is much more convenient to simply use <b><b>put-call parity</b></b>.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="date">Created: 2022-08-07 Sun 13:12</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
