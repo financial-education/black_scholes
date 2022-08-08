@@ -10,8 +10,6 @@ If we assume that stock options exist in a world where...
 
 ...then we can value European Call Options on Non-Dividend Paying Stocks using the Black-Scholes Formula shown on the next slide.
 
- 
-
 ** Black-Scholes Formula:
 
 $C_0 = S_0N(d_1) - Xe^{-rT}N(d_2)$
@@ -145,6 +143,64 @@ sidebarLayout(
 ```
 #+end_src
 
+*C implementation below not yet working.*
+
+#+begin_src C :flags "-lgsl -lcblas -lm"
+#include <stdio.h>
+#include <math.h>
+#include <gsl/gsl_randist.h>
+
+double d1(double stock, double strike, double risk_free, double vol, double time)
+  {
+return (log(stock/strike) + (risk_free + (vol * vol) / 2) * time) / (vol * sqrt(time));
+    }
+
+double d2(double d1_output, double vol, double time)
+  {
+  return d1_output - vol * sqrt(time);
+    }
+
+double black_scholes_call(double stock, double pd1, double pd2, double strike, double discount)
+  {
+    return stock * pd1 - strike * discount * pd2;
+    }
+
+
+int
+main (void)
+{
+
+  double stock = 100.0;
+  double strike = 105.0;
+  double risk_free = 0.01;
+  double vol = 0.5;
+  double time = 1;
+
+  double d1_output = d1(stock, strike, risk_free, vol, time);
+  double pd1 = gsl_ran_ugaussian_pdf(d1_output);
+  double d2_output = d2(d1_output, vol, time);
+  double pd2 = gsl_ran_ugaussian_pdf(d2_output);
+  double discount = exp(-1 * risk_free * time);
+  double call_value = black_scholes_call(stock, pd1, pd2, strike, discount);
+
+
+  printf("The value of the call is %f\n.", call_value);
+  printf("The value of d1 is %f\n.", d1_output);
+  printf("The value of d2 is %f\n.", d2_output);
+  printf("The value of the gaussian pdf d1 is %f\n.", pd1);
+  printf("The value of the gaussian pdf d2 is %f\n.", pd2);
+      
+  return 0;
+}
+#+end_src
+
+#+RESULTS:
+| The  | value | of | the | call     | is       | 0.0 |    |          |
+| .The | value | of | d1  | is       | 0.17242  |     |    |          |
+| .The | value | of | d2  | is       | -0.32758 |     |    |          |
+| .The | value | of | the | gaussian | pdf      | d1  | is | 0.393056 |
+| .The | value | of | the | gaussian | pdf      | d2  | is | 0.378101 |
+| .    |       |    |     |          |          |     |    |          |
 
 ** How Do We Calculate the Input Parameters
 
@@ -171,8 +227,7 @@ Remember that a stock price is adjusted downward by the dividend amount when the
 -  Note, because firms often increase or decrease their dividend payments, we can only estimate an *expected* dividend yield or payment.  
 
  
-
-## Dividend Adjustments
+*** Dividend Adjustments
 
 In the Black-Scholes world (where the option is European) we can reduce the stock price by the present value of all the dividends *during the life of the option*.
 
@@ -182,23 +237,18 @@ In the Black-Scholes world (where the option is European) we can reduce the stoc
 
 -  Note, we only include the dividend to be paid during the life of the option.  So if the option expires in a month and the next dividend paid by the stock is in two months, we do *not* include a dividend adjustment. 
 
- 
-
-## Volatility
+*** Volatility
 
 Volatility (the standard deviation of log-returns) is not directly observable, and it is the toughest input to determine.  Two common ways to estimate volatility:
 
 -  Use historical data
 -  Extracting volatility from other options
 
-
 **Important Note:** Volatility is assumed to be constant in the Black-Scholes model.  This is why you can estimate volatility over a historical period and use that volatility over a later period.  But this assumption was made for mathematical ease, and it is not realistic.
 
 So in the model's world, using historical volatility is fine, even though in the real world it is a poor approach. 
 
- 
-
-## Historical Data
+**** Historical Data
 
 We can use historical stock price data to calculate continuously compounded returns (log-returns).  We can then take the standard deviation of these returns (using *STDEV()* in Excel, for example) and annualize the standard deviation, affording an estimate of annual volatility.
 
@@ -206,9 +256,7 @@ We can use historical stock price data to calculate continuously compounded retu
 
 -  Daily prices over the last 100 days are commonly used.
 
- 
-
-## Annualizing the Standard Deviation
+**** Annualizing the Standard Deviation
 
 Once we have the standard deviation of log returns, we must annualize it.  To do so we use the equation below, where $\sigma_a$ and $sigma_p$ are the annual and sample period standard deviations:
 
@@ -218,9 +266,7 @@ $\sigma_a = \sigma_p \sqrt{\#\ periods\ in\ a\ year}$
 
 -  Above we assume 252 trading days in a year.
 
- 
-
-## Interactive App
+**** Interactive App
 
 -  The following app will calculate annualized historical volatility for any stock and choice of sampling frequency and length of history.
 
@@ -228,8 +274,7 @@ $\sigma_a = \sigma_p \sqrt{\#\ periods\ in\ a\ year}$
 
  
 
-##
-
+#+begin_src R
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, error = FALSE}
 #{{{
 inputPanel(
@@ -251,10 +296,11 @@ renderPlot({
 })
 #}}}
 ```
+#+end_src
 
  
 
-## Extracting Volatility from Other Options
+*** Extracting Volatility from Other Options
 
 We can also extract volatility from similar options and use that number as the volatility for our options.  
 
@@ -262,25 +308,19 @@ We can also extract volatility from similar options and use that number as the v
 
 -  It has the benefit of being a forward-looking measure, which will take into account market expectations of the volatility from future events.  Historical volatility, on the other hand, only looks backwards.
 
- 
-
-## Implied vs Historical Volatility
+*** Implied vs Historical Volatility
 
 This distinction is particularly important if there is an event which will take place during the life of the option, which hasn't happened historically.
 
 -  Consider, for example, what the consequences might be if you own options expiring in 3 months on Chevron (CVX) and in one month Congress will vote on legislation to allow unfettered exports of crude oil from the U.S. (exports are now substantially limited).
 
  
-
-## Implied Volatility
+*** Implied Volatility
 
 We can extract a volatility estimate from traded options by plugging the option price into the Black-Scholes formula and solving for volatility. This volatility estimate is called the option's 'implied volatility'.
 
- 
 
-
-##
-
+#+begin_src R
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 #{{{
 sidebarLayout(
@@ -322,16 +362,12 @@ sidebarLayout(
 	      )
 #}}}
 ```
+#+end_src 
 
- 
-
-## But What about Put Options?
+** But What about Put Options?
 
 So far we have only looked at call options, but can Black-Scholes also value put options?
 
 -  Yes, we can write an explicit formula for the Black-Scholes value of a European put option.
 
 -  However it is much more convenient to simply use **put-call parity**.
-
- 
- 
