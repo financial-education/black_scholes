@@ -150,57 +150,56 @@ sidebarLayout(
 #include <math.h>
 #include <gsl/gsl_randist.h>
 
+double gsl_cdf_gaussian_P(double x, double sigma);
+
 double d1(double stock, double strike, double risk_free, double vol, double time)
   {
 return (log(stock/strike) + (risk_free + (vol * vol) / 2) * time) / (vol * sqrt(time));
-    }
+  }
 
 double d2(double d1_output, double vol, double time)
   {
   return d1_output - vol * sqrt(time);
-    }
+  }
 
 double black_scholes_call(double stock, double pd1, double pd2, double strike, double discount)
   {
-    return stock * pd1 - strike * discount * pd2;
-    }
+    return (stock * pd1 - strike * discount * pd2);
+  }
 
 
 int
 main (void)
 {
 
-  double stock = 100.0;
-  double strike = 105.0;
+  double stock = 50.0;
+  double strike = 40.0;
   double risk_free = 0.01;
   double vol = 0.5;
   double time = 1;
 
   double d1_output = d1(stock, strike, risk_free, vol, time);
-  double pd1 = gsl_ran_ugaussian_pdf(d1_output);
+  double pd1 = gsl_cdf_gaussian_P(d1_output, 1);
   double d2_output = d2(d1_output, vol, time);
-  double pd2 = gsl_ran_ugaussian_pdf(d2_output);
+  double pd2 = gsl_cdf_gaussian_P(d2_output, 1);
   double discount = exp(-1 * risk_free * time);
   double call_value = black_scholes_call(stock, pd1, pd2, strike, discount);
 
-
-  printf("The value of the call is %f\n.", call_value);
-  printf("The value of d1 is %f\n.", d1_output);
-  printf("The value of d2 is %f\n.", d2_output);
-  printf("The value of the gaussian pdf d1 is %f\n.", pd1);
-  printf("The value of the gaussian pdf d2 is %f\n.", pd2);
-      
+//  printf("The value of d1 is %f\n.", d1_output);
+//  printf("The value of d2 is %f\n.", d2_output);
+//  printf("The value of stock is %f\n.", stock);
+//  printf("The value of strike is %f\n.", strike);
+//  printf("The value of discount is %f\n.", discount);
+//  printf("The value of the gaussian pdf d1 is %f\n.", pd1);
+//  printf("The value of the gaussian pdf d2 is %f\n.", pd2);
+  printf("The value of the call is $%.2f.\n", call_value);
+    
   return 0;
 }
 #+end_src
 
 #+RESULTS:
-| The  | value | of | the | call     | is       | 0.0 |    |          |
-| .The | value | of | d1  | is       | 0.17242  |     |    |          |
-| .The | value | of | d2  | is       | -0.32758 |     |    |          |
-| .The | value | of | the | gaussian | pdf      | d1  | is | 0.393056 |
-| .The | value | of | the | gaussian | pdf      | d2  | is | 0.378101 |
-| .    |       |    |     |          |          |     |    |          |
+: The value of the call is $14.96.
 
 ** How Do We Calculate the Input Parameters
 
