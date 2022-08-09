@@ -187,13 +187,6 @@ main (void)
   double discount = exp(-1 * risk_free * time);
   double call_value = black_scholes_call(stock, pd1, pd2, strike, discount);
 
-//  printf("The value of d1 is %f\n.", d1_output);
-//  printf("The value of d2 is %f\n.", d2_output);
-//  printf("The value of stock is %f\n.", stock);
-//  printf("The value of strike is %f\n.", strike);
-//  printf("The value of discount is %f\n.", discount);
-//  printf("The value of the gaussian pdf d1 is %f\n.", pd1);
-//  printf("The value of the gaussian pdf d2 is %f\n.", pd2);
   printf("The value of the call is $%.2f.\n", call_value);
     
   return 0;
