@@ -147,7 +147,7 @@ sidebarLayout(
 
 *** Calculation in C
 
-#+begin_src C :flags "-lgsl -lcblas -lm"
+#+begin_src C :flags "-lgsl -lcblas -lm" :exports both :results output
 #include <stdio.h>
 #include <math.h>
 #include <gsl/gsl_randist.h>
