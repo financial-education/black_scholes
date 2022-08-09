@@ -145,7 +145,7 @@ sidebarLayout(
 ```
 #+end_src
 
-*C implementation below not yet working.*
+*** Calculation in C
 
 #+begin_src C :flags "-lgsl -lcblas -lm"
 #include <stdio.h>
