@@ -3,195 +3,18 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-08-08 Mon 21:24 -->
+<!-- 2022-08-08 Mon 21:25 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>"Black-Scholes Option Valuation"</title>
+<meta name="author" content="Matt Brigida, Ph.D." />
 <meta name="generator" content="Org Mode" />
-<style>
-  #content { max-width: 60em; margin: auto; }
-  .title  { text-align: center;
-             margin-bottom: .2em; }
-  .subtitle { text-align: center;
-              font-size: medium;
-              font-weight: bold;
-              margin-top:0; }
-  .todo   { font-family: monospace; color: red; }
-  .done   { font-family: monospace; color: green; }
-  .priority { font-family: monospace; color: orange; }
-  .tag    { background-color: #eee; font-family: monospace;
-            padding: 2px; font-size: 80%; font-weight: normal; }
-  .timestamp { color: #bebebe; }
-  .timestamp-kwd { color: #5f9ea0; }
-  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
-  .underline { text-decoration: underline; }
-  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
-  p.verse { margin-left: 3%; }
-  pre {
-    border: 1px solid #e6e6e6;
-    border-radius: 3px;
-    background-color: #f2f2f2;
-    padding: 8pt;
-    font-family: monospace;
-    overflow: auto;
-    margin: 1.2em;
-  }
-  pre.src {
-    position: relative;
-    overflow: auto;
-  }
-  pre.src:before {
-    display: none;
-    position: absolute;
-    top: -8px;
-    right: 12px;
-    padding: 3px;
-    color: #555;
-    background-color: #f2f2f299;
-  }
-  pre.src:hover:before { display: inline; margin-top: 14px;}
-  /* Languages per Org manual */
-  pre.src-asymptote:before { content: 'Asymptote'; }
-  pre.src-awk:before { content: 'Awk'; }
-  pre.src-authinfo::before { content: 'Authinfo'; }
-  pre.src-C:before { content: 'C'; }
-  /* pre.src-C++ doesn't work in CSS */
-  pre.src-clojure:before { content: 'Clojure'; }
-  pre.src-css:before { content: 'CSS'; }
-  pre.src-D:before { content: 'D'; }
-  pre.src-ditaa:before { content: 'ditaa'; }
-  pre.src-dot:before { content: 'Graphviz'; }
-  pre.src-calc:before { content: 'Emacs Calc'; }
-  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-fortran:before { content: 'Fortran'; }
-  pre.src-gnuplot:before { content: 'gnuplot'; }
-  pre.src-haskell:before { content: 'Haskell'; }
-  pre.src-hledger:before { content: 'hledger'; }
-  pre.src-java:before { content: 'Java'; }
-  pre.src-js:before { content: 'Javascript'; }
-  pre.src-latex:before { content: 'LaTeX'; }
-  pre.src-ledger:before { content: 'Ledger'; }
-  pre.src-lisp:before { content: 'Lisp'; }
-  pre.src-lilypond:before { content: 'Lilypond'; }
-  pre.src-lua:before { content: 'Lua'; }
-  pre.src-matlab:before { content: 'MATLAB'; }
-  pre.src-mscgen:before { content: 'Mscgen'; }
-  pre.src-ocaml:before { content: 'Objective Caml'; }
-  pre.src-octave:before { content: 'Octave'; }
-  pre.src-org:before { content: 'Org mode'; }
-  pre.src-oz:before { content: 'OZ'; }
-  pre.src-plantuml:before { content: 'Plantuml'; }
-  pre.src-processing:before { content: 'Processing.js'; }
-  pre.src-python:before { content: 'Python'; }
-  pre.src-R:before { content: 'R'; }
-  pre.src-ruby:before { content: 'Ruby'; }
-  pre.src-sass:before { content: 'Sass'; }
-  pre.src-scheme:before { content: 'Scheme'; }
-  pre.src-screen:before { content: 'Gnu Screen'; }
-  pre.src-sed:before { content: 'Sed'; }
-  pre.src-sh:before { content: 'shell'; }
-  pre.src-sql:before { content: 'SQL'; }
-  pre.src-sqlite:before { content: 'SQLite'; }
-  /* additional languages in org.el's org-babel-load-languages alist */
-  pre.src-forth:before { content: 'Forth'; }
-  pre.src-io:before { content: 'IO'; }
-  pre.src-J:before { content: 'J'; }
-  pre.src-makefile:before { content: 'Makefile'; }
-  pre.src-maxima:before { content: 'Maxima'; }
-  pre.src-perl:before { content: 'Perl'; }
-  pre.src-picolisp:before { content: 'Pico Lisp'; }
-  pre.src-scala:before { content: 'Scala'; }
-  pre.src-shell:before { content: 'Shell Script'; }
-  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
-  /* additional language identifiers per "defun org-babel-execute"
-       in ob-*.el */
-  pre.src-cpp:before  { content: 'C++'; }
-  pre.src-abc:before  { content: 'ABC'; }
-  pre.src-coq:before  { content: 'Coq'; }
-  pre.src-groovy:before  { content: 'Groovy'; }
-  /* additional language identifiers from org-babel-shell-names in
-     ob-shell.el: ob-shell is the only babel language using a lambda to put
-     the execution function name together. */
-  pre.src-bash:before  { content: 'bash'; }
-  pre.src-csh:before  { content: 'csh'; }
-  pre.src-ash:before  { content: 'ash'; }
-  pre.src-dash:before  { content: 'dash'; }
-  pre.src-ksh:before  { content: 'ksh'; }
-  pre.src-mksh:before  { content: 'mksh'; }
-  pre.src-posh:before  { content: 'posh'; }
-  /* Additional Emacs modes also supported by the LaTeX listings package */
-  pre.src-ada:before { content: 'Ada'; }
-  pre.src-asm:before { content: 'Assembler'; }
-  pre.src-caml:before { content: 'Caml'; }
-  pre.src-delphi:before { content: 'Delphi'; }
-  pre.src-html:before { content: 'HTML'; }
-  pre.src-idl:before { content: 'IDL'; }
-  pre.src-mercury:before { content: 'Mercury'; }
-  pre.src-metapost:before { content: 'MetaPost'; }
-  pre.src-modula-2:before { content: 'Modula-2'; }
-  pre.src-pascal:before { content: 'Pascal'; }
-  pre.src-ps:before { content: 'PostScript'; }
-  pre.src-prolog:before { content: 'Prolog'; }
-  pre.src-simula:before { content: 'Simula'; }
-  pre.src-tcl:before { content: 'tcl'; }
-  pre.src-tex:before { content: 'TeX'; }
-  pre.src-plain-tex:before { content: 'Plain TeX'; }
-  pre.src-verilog:before { content: 'Verilog'; }
-  pre.src-vhdl:before { content: 'VHDL'; }
-  pre.src-xml:before { content: 'XML'; }
-  pre.src-nxml:before { content: 'XML'; }
-  /* add a generic configuration mode; LaTeX export needs an additional
-     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
-  pre.src-conf:before { content: 'Configuration File'; }
-
-  table { border-collapse:collapse; }
-  caption.t-above { caption-side: top; }
-  caption.t-bottom { caption-side: bottom; }
-  td, th { vertical-align:top;  }
-  th.org-right  { text-align: center;  }
-  th.org-left   { text-align: center;   }
-  th.org-center { text-align: center; }
-  td.org-right  { text-align: right;  }
-  td.org-left   { text-align: left;   }
-  td.org-center { text-align: center; }
-  dt { font-weight: bold; }
-  .footpara { display: inline; }
-  .footdef  { margin-bottom: 1em; }
-  .figure { padding: 1em; }
-  .figure p { text-align: center; }
-  .equation-container {
-    display: table;
-    text-align: center;
-    width: 100%;
-  }
-  .equation {
-    vertical-align: middle;
-  }
-  .equation-label {
-    display: table-cell;
-    text-align: right;
-    vertical-align: middle;
-  }
-  .inlinetask {
-    padding: 10px;
-    border: 2px solid gray;
-    margin: 10px;
-    background: #ffffcc;
-  }
-  #org-div-home-and-up
-   { text-align: right; font-size: 70%; white-space: nowrap; }
-  textarea { overflow-x: auto; }
-  .linenr { font-size: smaller }
-  .code-highlighted { background-color: #ffff00; }
-  .org-info-js_info-navigation { border-style: none; }
-  #org-info-js_console-label
-    { font-size: 10px; font-weight: bold; white-space: nowrap; }
-  .org-info-js_search-highlight
-    { background-color: #ffff00; color: #000000; font-weight: bold; }
-  .org-svg { width: 90%; }
-</style>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/js/readtheorg.js"></script>
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
         displayAlign: "center",
@@ -221,35 +44,35 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org6283523">1. The Black-Scholes World</a></li>
-<li><a href="#org7b5ab96">2. Black-Scholes Formula:</a></li>
-<li><a href="#org657a599">3. Where is the Expected Return?</a></li>
-<li><a href="#orgd7c3678">4. Intuitive Grasp of the Formula</a></li>
-<li><a href="#orgb79a20a">5. Black-Scholes App</a></li>
-<li><a href="#org1f05f58">6. How Do We Calculate the Input Parameters</a>
+<li><a href="#orgfedbfd4">1. The Black-Scholes World</a></li>
+<li><a href="#orgfd7fe7c">2. Black-Scholes Formula:</a></li>
+<li><a href="#org8e343ad">3. Where is the Expected Return?</a></li>
+<li><a href="#orgfc830de">4. Intuitive Grasp of the Formula</a></li>
+<li><a href="#orgbe4cdf0">5. Black-Scholes App</a></li>
+<li><a href="#orgdc43db6">6. How Do We Calculate the Input Parameters</a>
 <ul>
-<li><a href="#orge9cb3d3">6.1. The Risk Free Rate</a></li>
-<li><a href="#org66cd649">6.2. Dividends and Stock and Option Prices</a></li>
-<li><a href="#org175390b">6.3. Dividend Adjustments</a></li>
-<li><a href="#orgdfec1b5">6.4. Volatility</a>
+<li><a href="#org5bcd6c7">6.1. The Risk Free Rate</a></li>
+<li><a href="#orgf9558d2">6.2. Dividends and Stock and Option Prices</a></li>
+<li><a href="#orgb8eb343">6.3. Dividend Adjustments</a></li>
+<li><a href="#org2d39ea6">6.4. Volatility</a>
 <ul>
-<li><a href="#org56e7df3">6.4.1. Historical Data</a></li>
-<li><a href="#org80213ea">6.4.2. Annualizing the Standard Deviation</a></li>
-<li><a href="#org084f2b5">6.4.3. Interactive App</a></li>
+<li><a href="#org8ad5cb8">6.4.1. Historical Data</a></li>
+<li><a href="#org6bd654e">6.4.2. Annualizing the Standard Deviation</a></li>
+<li><a href="#org0689c6f">6.4.3. Interactive App</a></li>
 </ul>
 </li>
-<li><a href="#orgea01e99">6.5. Extracting Volatility from Other Options</a></li>
-<li><a href="#org41b37ad">6.6. Implied vs Historical Volatility</a></li>
-<li><a href="#org37c8a8a">6.7. Implied Volatility</a></li>
+<li><a href="#org8664014">6.5. Extracting Volatility from Other Options</a></li>
+<li><a href="#org2819c82">6.6. Implied vs Historical Volatility</a></li>
+<li><a href="#org0850d8e">6.7. Implied Volatility</a></li>
 </ul>
 </li>
-<li><a href="#orgb16e824">7. But What about Put Options?</a></li>
+<li><a href="#orge6223e7">7. But What about Put Options?</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org6283523" class="outline-2">
-<h2 id="org6283523"><span class="section-number-2">1.</span> The Black-Scholes World</h2>
+<div id="outline-container-orgfedbfd4" class="outline-2">
+<h2 id="orgfedbfd4"><span class="section-number-2">1.</span> The Black-Scholes World</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 If we assume that stock options exist in a world where&#x2026;
@@ -267,8 +90,8 @@ If we assume that stock options exist in a world where&#x2026;
 </div>
 </div>
 
-<div id="outline-container-org7b5ab96" class="outline-2">
-<h2 id="org7b5ab96"><span class="section-number-2">2.</span> Black-Scholes Formula:</h2>
+<div id="outline-container-orgfd7fe7c" class="outline-2">
+<h2 id="orgfd7fe7c"><span class="section-number-2">2.</span> Black-Scholes Formula:</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 \(C_0 = S_0N(d_1) - Xe^{-rT}N(d_2)\)
@@ -319,8 +142,8 @@ column-count: 2;
 </div>
 </div>
 
-<div id="outline-container-org657a599" class="outline-2">
-<h2 id="org657a599"><span class="section-number-2">3.</span> Where is the Expected Return?</h2>
+<div id="outline-container-org8e343ad" class="outline-2">
+<h2 id="org8e343ad"><span class="section-number-2">3.</span> Where is the Expected Return?</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 The groundbreaking feature of the Black-Scholes model, as opposed to earlier attempts at option valuation, is that it does not require the  stock's expected return as an input.
@@ -337,8 +160,8 @@ The groundbreaking feature of the Black-Scholes model, as opposed to earlier att
 </div>
 
 
-<div id="outline-container-orgd7c3678" class="outline-2">
-<h2 id="orgd7c3678"><span class="section-number-2">4.</span> Intuitive Grasp of the Formula</h2>
+<div id="outline-container-orgfc830de" class="outline-2">
+<h2 id="orgfc830de"><span class="section-number-2">4.</span> Intuitive Grasp of the Formula</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Looking at the option value formula: \(C_0 = S_0N(d_1) - Xe^{-rT}N(d_2)\)
@@ -358,8 +181,8 @@ You can look at the \(N(d)\) terms as the likelihood that the option will be exe
 </div>
 </div>
 
-<div id="outline-container-orgb79a20a" class="outline-2">
-<h2 id="orgb79a20a"><span class="section-number-2">5.</span> Black-Scholes App</h2>
+<div id="outline-container-orgbe4cdf0" class="outline-2">
+<h2 id="orgbe4cdf0"><span class="section-number-2">5.</span> Black-Scholes App</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 The following app will calculate the Black-Scholes European call option price for a set of given inputs.
@@ -491,8 +314,8 @@ sidebarLayout(
 </div>
 </div>
 
-<div id="outline-container-org1f05f58" class="outline-2">
-<h2 id="org1f05f58"><span class="section-number-2">6.</span> How Do We Calculate the Input Parameters</h2>
+<div id="outline-container-orgdc43db6" class="outline-2">
+<h2 id="orgdc43db6"><span class="section-number-2">6.</span> How Do We Calculate the Input Parameters</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 The present stock price is easily observable, and the exercise price and time to maturity are aspects of the option contract. The parameters which are less easily observed are:
@@ -505,8 +328,8 @@ The present stock price is easily observable, and the exercise price and time to
 </ul>
 </div>
 
-<div id="outline-container-orge9cb3d3" class="outline-3">
-<h3 id="orge9cb3d3"><span class="section-number-3">6.1.</span> The Risk Free Rate</h3>
+<div id="outline-container-org5bcd6c7" class="outline-3">
+<h3 id="org5bcd6c7"><span class="section-number-3">6.1.</span> The Risk Free Rate</h3>
 <div class="outline-text-3" id="text-6-1">
 <p>
 The risk free rate should be the annualized continuously-compounded rate on a default free security <b>with the same maturity</b> as the expiration data of the option.
@@ -518,8 +341,8 @@ The risk free rate should be the annualized continuously-compounded rate on a de
 </div>
 </div>
 
-<div id="outline-container-org66cd649" class="outline-3">
-<h3 id="org66cd649"><span class="section-number-3">6.2.</span> Dividends and Stock and Option Prices</h3>
+<div id="outline-container-orgf9558d2" class="outline-3">
+<h3 id="orgf9558d2"><span class="section-number-3">6.2.</span> Dividends and Stock and Option Prices</h3>
 <div class="outline-text-3" id="text-6-2">
 <p>
 Remember that a stock price is adjusted downward by the dividend amount when the dividend is paid.  For example, say before a \$1 dividend is paid the stock is \$50.  Immediately after the dividend is paid the stock's price will be \$49 (otherwise there would be an arbitrage).
@@ -536,8 +359,8 @@ Remember that a stock price is adjusted downward by the dividend amount when the
 </div>
 
 
-<div id="outline-container-org175390b" class="outline-3">
-<h3 id="org175390b"><span class="section-number-3">6.3.</span> Dividend Adjustments</h3>
+<div id="outline-container-orgb8eb343" class="outline-3">
+<h3 id="orgb8eb343"><span class="section-number-3">6.3.</span> Dividend Adjustments</h3>
 <div class="outline-text-3" id="text-6-3">
 <p>
 In the Black-Scholes world (where the option is European) we can reduce the stock price by the present value of all the dividends <b>during the life of the option</b>.
@@ -553,8 +376,8 @@ In the Black-Scholes world (where the option is European) we can reduce the stoc
 </div>
 </div>
 
-<div id="outline-container-orgdfec1b5" class="outline-3">
-<h3 id="orgdfec1b5"><span class="section-number-3">6.4.</span> Volatility</h3>
+<div id="outline-container-org2d39ea6" class="outline-3">
+<h3 id="org2d39ea6"><span class="section-number-3">6.4.</span> Volatility</h3>
 <div class="outline-text-3" id="text-6-4">
 <p>
 Volatility (the standard deviation of log-returns) is not directly observable, and it is the toughest input to determine.  Two common ways to estimate volatility:
@@ -574,8 +397,8 @@ So in the model's world, using historical volatility is fine, even though in the
 </p>
 </div>
 
-<div id="outline-container-org56e7df3" class="outline-4">
-<h4 id="org56e7df3"><span class="section-number-4">6.4.1.</span> Historical Data</h4>
+<div id="outline-container-org8ad5cb8" class="outline-4">
+<h4 id="org8ad5cb8"><span class="section-number-4">6.4.1.</span> Historical Data</h4>
 <div class="outline-text-4" id="text-6-4-1">
 <p>
 We can use historical stock price data to calculate continuously compounded returns (log-returns).  We can then take the standard deviation of these returns (using <b>STDEV()</b> in Excel, for example) and annualize the standard deviation, affording an estimate of annual volatility.
@@ -589,8 +412,8 @@ We can use historical stock price data to calculate continuously compounded retu
 </div>
 </div>
 
-<div id="outline-container-org80213ea" class="outline-4">
-<h4 id="org80213ea"><span class="section-number-4">6.4.2.</span> Annualizing the Standard Deviation</h4>
+<div id="outline-container-org6bd654e" class="outline-4">
+<h4 id="org6bd654e"><span class="section-number-4">6.4.2.</span> Annualizing the Standard Deviation</h4>
 <div class="outline-text-4" id="text-6-4-2">
 <p>
 Once we have the standard deviation of log returns, we must annualize it.  To do so we use the equation below, where \(\sigma_a\) and \(sigma_p\) are the annual and sample period standard deviations:
@@ -608,8 +431,8 @@ Once we have the standard deviation of log returns, we must annualize it.  To do
 </div>
 </div>
 
-<div id="outline-container-org084f2b5" class="outline-4">
-<h4 id="org084f2b5"><span class="section-number-4">6.4.3.</span> Interactive App</h4>
+<div id="outline-container-org0689c6f" class="outline-4">
+<h4 id="org0689c6f"><span class="section-number-4">6.4.3.</span> Interactive App</h4>
 <div class="outline-text-4" id="text-6-4-3">
 <ul class="org-ul">
 <li>The following app will calculate annualized historical volatility for any stock and choice of sampling frequency and length of history.</li>
@@ -649,8 +472,8 @@ renderPlot({
 
 
 
-<div id="outline-container-orgea01e99" class="outline-3">
-<h3 id="orgea01e99"><span class="section-number-3">6.5.</span> Extracting Volatility from Other Options</h3>
+<div id="outline-container-org8664014" class="outline-3">
+<h3 id="org8664014"><span class="section-number-3">6.5.</span> Extracting Volatility from Other Options</h3>
 <div class="outline-text-3" id="text-6-5">
 <p>
 We can also extract volatility from similar options and use that number as the volatility for our options.  
@@ -664,8 +487,8 @@ We can also extract volatility from similar options and use that number as the v
 </div>
 </div>
 
-<div id="outline-container-org41b37ad" class="outline-3">
-<h3 id="org41b37ad"><span class="section-number-3">6.6.</span> Implied vs Historical Volatility</h3>
+<div id="outline-container-org2819c82" class="outline-3">
+<h3 id="org2819c82"><span class="section-number-3">6.6.</span> Implied vs Historical Volatility</h3>
 <div class="outline-text-3" id="text-6-6">
 <p>
 This distinction is particularly important if there is an event which will take place during the life of the option, which hasn't happened historically.
@@ -678,8 +501,8 @@ This distinction is particularly important if there is an event which will take 
 </div>
 
 
-<div id="outline-container-org37c8a8a" class="outline-3">
-<h3 id="org37c8a8a"><span class="section-number-3">6.7.</span> Implied Volatility</h3>
+<div id="outline-container-org0850d8e" class="outline-3">
+<h3 id="org0850d8e"><span class="section-number-3">6.7.</span> Implied Volatility</h3>
 <div class="outline-text-3" id="text-6-7">
 <p>
 We can extract a volatility estimate from traded options by plugging the option price into the Black-Scholes formula and solving for volatility. This volatility estimate is called the option's 'implied volatility'.
@@ -734,8 +557,8 @@ sidebarLayout(
 </div>
 </div>
 
-<div id="outline-container-orgb16e824" class="outline-2">
-<h2 id="orgb16e824"><span class="section-number-2">7.</span> But What about Put Options?</h2>
+<div id="outline-container-orge6223e7" class="outline-2">
+<h2 id="orge6223e7"><span class="section-number-2">7.</span> But What about Put Options?</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 So far we have only looked at call options, but can Black-Scholes also value put options?
@@ -750,7 +573,8 @@ So far we have only looked at call options, but can Black-Scholes also value put
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2022-08-08 Mon 21:24</p>
+<p class="author">Author: Matt Brigida, Ph.D.</p>
+<p class="date">Created: 2022-08-08 Mon 21:25</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
