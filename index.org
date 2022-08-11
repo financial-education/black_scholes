@@ -1,6 +1,7 @@
 #+title: "Black-Scholes Option Valuation"
 #+author: Matt Brigida, Ph.D.
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+#+HTML_HEAD: <style>pre.src{background:#343131;color:white;} </style>
 
 ** The Black-Scholes World
 
@@ -357,6 +358,16 @@ sidebarLayout(
 #}}}
 ```
 #+end_src 
+
+*** Python Implementation
+
+#+begin_src python
+import numpy as np
+from scipy.optimize import minimize
+
+def black_scholes():
+
+#+end_src
 
 ** But What about Put Options?
 
