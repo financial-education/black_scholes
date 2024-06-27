@@ -32,9 +32,9 @@ column-count: 2;
 
 *where*
 
-$d_1 = \frac{ln(\frac{S_0}{X}) + (r+\frac{\sigma^2}{2})T}{\sigma\sqrt(T)}$
+$d_1 = \frac{ln(\frac{S_0}{X}) + (r+\frac{\sigma^2}{2})T}{\sigma\sqrt{T}}$
 
-$d_2 = d_1 - \sigma\sqrt(T)$
+$d_2 = d_1 - \sigma\sqrt{T}$
 
 - $C_0$ is the value of the call option at time 0.
 
@@ -376,3 +376,5 @@ So far we have only looked at call options, but can Black-Scholes also value put
 -  Yes, we can write an explicit formula for the Black-Scholes value of a European put option.
 
 -  However it is much more convenient to simply use **put-call parity**.
+
+  $$P_0 = C_0 + Xe^{-rT} - S_0$$
