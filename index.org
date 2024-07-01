@@ -90,7 +90,11 @@ The following app will calculate the Black-Scholes European call option price fo
 - You can use the app to check your own calculations.  To help, you can also choose to see $d1$ and $d2$ to also check those values.
 
 
-#+begin_src R
+#+begin_export html
+    <iframe src="https://ztranche.com/investments/black_scholes/app1/" height="800px" width="100%"></iframe>
+#+end_export
+
+#+begin_src R :exports none :eval no
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 #{{{
 sidebarLayout(
@@ -267,9 +271,13 @@ $\sigma_a = \sigma_p \sqrt{\#\ periods\ in\ a\ year}$
 
 -  Change the date range and see if the historical volatility changes -- remember Black-Scholes assumes constant volatility. 
 
+#+begin_export html
+    <iframe src="https://ztranche.com/investments/black_scholes/app2/" height="800px" width="100%"></iframe>
+#+end_export
+
  
 
-#+begin_src R
+#+begin_src R :exports none :eval no
 ```{r, echo=FALSE, message=FALSE, warning=FALSE, error = FALSE}
 #{{{
 inputPanel(
@@ -314,8 +322,12 @@ This distinction is particularly important if there is an event which will take 
 
 We can extract a volatility estimate from traded options by plugging the option price into the Black-Scholes formula and solving for volatility. This volatility estimate is called the option's 'implied volatility'.
 
+#+begin_export html
+    <iframe src="https://ztranche.com/investments/black_scholes/app3/" height="800px" width="100%"></iframe>
+#+end_export
 
-#+begin_src R
+
+#+begin_src R :exports none :eval no
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 #{{{
 sidebarLayout(

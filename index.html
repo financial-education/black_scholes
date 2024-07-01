@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-06-26 Wed 23:03 -->
+<!-- 2024-06-30 Sun 21:53 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Black-Scholes Option Valuation</title>
@@ -56,40 +56,40 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org768bcec">1. The Black-Scholes World</a></li>
-<li><a href="#org3445fc4">2. Black-Scholes Formula:</a></li>
-<li><a href="#org816d229">3. Where is the Expected Return?</a></li>
-<li><a href="#org7855dab">4. Intuitive Grasp of the Formula</a></li>
-<li><a href="#org7f5e101">5. Black-Scholes App</a>
+<li><a href="#orgb4c2d8e">1. The Black-Scholes World</a></li>
+<li><a href="#org8106b25">2. Black-Scholes Formula:</a></li>
+<li><a href="#orgebb85bd">3. Where is the Expected Return?</a></li>
+<li><a href="#orgeb02d07">4. Intuitive Grasp of the Formula</a></li>
+<li><a href="#org133b8ae">5. Black-Scholes App</a>
 <ul>
-<li><a href="#org02ead6e">5.1. Calculation in C</a></li>
+<li><a href="#org878054c">5.1. Calculation in C</a></li>
 </ul>
 </li>
-<li><a href="#orge8c17f9">6. How Do We Calculate the Input Parameters</a>
+<li><a href="#org8a0ccf3">6. How Do We Calculate the Input Parameters</a>
 <ul>
-<li><a href="#org1ba79a4">6.1. The Risk Free Rate</a></li>
-<li><a href="#orgfa1db10">6.2. Dividends and Stock and Option Prices</a></li>
-<li><a href="#orgdb704f3">6.3. Dividend Adjustments</a></li>
-<li><a href="#org032a1f7">6.4. Volatility</a>
+<li><a href="#orgfdd8636">6.1. The Risk Free Rate</a></li>
+<li><a href="#org4c50763">6.2. Dividends and Stock and Option Prices</a></li>
+<li><a href="#org6f6676a">6.3. Dividend Adjustments</a></li>
+<li><a href="#org80b232f">6.4. Volatility</a>
 <ul>
-<li><a href="#org94e5319">6.4.1. Historical Data</a></li>
-<li><a href="#org96d95c6">6.4.2. Annualizing the Standard Deviation</a></li>
-<li><a href="#org5734679">6.4.3. Interactive App</a></li>
+<li><a href="#orgb6166fd">6.4.1. Historical Data</a></li>
+<li><a href="#orgb568272">6.4.2. Annualizing the Standard Deviation</a></li>
+<li><a href="#org71adcfe">6.4.3. Interactive App</a></li>
 </ul>
 </li>
-<li><a href="#org168f200">6.5. Extracting Volatility from Other Options</a></li>
-<li><a href="#org9a457df">6.6. Implied vs Historical Volatility</a></li>
-<li><a href="#orga0e04e0">6.7. Implied Volatility</a></li>
-<li><a href="#orgbc66bd8">6.8. Python Implementation</a></li>
+<li><a href="#orge8a4762">6.5. Extracting Volatility from Other Options</a></li>
+<li><a href="#org343fec3">6.6. Implied vs Historical Volatility</a></li>
+<li><a href="#org8d49e56">6.7. Implied Volatility</a></li>
+<li><a href="#orgcc1dec0">6.8. Python Implementation</a></li>
 </ul>
 </li>
-<li><a href="#orgee1a0f9">7. But What about Put Options?</a></li>
+<li><a href="#orgd0893ba">7. But What about Put Options?</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org768bcec" class="outline-2">
-<h2 id="org768bcec"><span class="section-number-2">1.</span> The Black-Scholes World</h2>
+<div id="outline-container-orgb4c2d8e" class="outline-2">
+<h2 id="orgb4c2d8e"><span class="section-number-2">1.</span> The Black-Scholes World</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 If we assume that stock options exist in a world where&#x2026;
@@ -107,8 +107,8 @@ If we assume that stock options exist in a world where&#x2026;
 </div>
 </div>
 
-<div id="outline-container-org3445fc4" class="outline-2">
-<h2 id="org3445fc4"><span class="section-number-2">2.</span> Black-Scholes Formula:</h2>
+<div id="outline-container-org8106b25" class="outline-2">
+<h2 id="org8106b25"><span class="section-number-2">2.</span> Black-Scholes Formula:</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 \(C_0 = S_0N(d_1) - Xe^{-rT}N(d_2)\)
@@ -159,8 +159,8 @@ column-count: 2;
 </div>
 </div>
 
-<div id="outline-container-org816d229" class="outline-2">
-<h2 id="org816d229"><span class="section-number-2">3.</span> Where is the Expected Return?</h2>
+<div id="outline-container-orgebb85bd" class="outline-2">
+<h2 id="orgebb85bd"><span class="section-number-2">3.</span> Where is the Expected Return?</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 The groundbreaking feature of the Black-Scholes model, as opposed to earlier attempts at option valuation, is that it does not require the  stock's expected return as an input.
@@ -177,8 +177,8 @@ The groundbreaking feature of the Black-Scholes model, as opposed to earlier att
 </div>
 
 
-<div id="outline-container-org7855dab" class="outline-2">
-<h2 id="org7855dab"><span class="section-number-2">4.</span> Intuitive Grasp of the Formula</h2>
+<div id="outline-container-orgeb02d07" class="outline-2">
+<h2 id="orgeb02d07"><span class="section-number-2">4.</span> Intuitive Grasp of the Formula</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Looking at the option value formula: \(C_0 = S_0N(d_1) - Xe^{-rT}N(d_2)\)
@@ -198,8 +198,8 @@ You can look at the \(N(d)\) terms as the likelihood that the option will be exe
 </div>
 </div>
 
-<div id="outline-container-org7f5e101" class="outline-2">
-<h2 id="org7f5e101"><span class="section-number-2">5.</span> Black-Scholes App</h2>
+<div id="outline-container-org133b8ae" class="outline-2">
+<h2 id="org133b8ae"><span class="section-number-2">5.</span> Black-Scholes App</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 The following app will calculate the Black-Scholes European call option price for a set of given inputs.
@@ -214,66 +214,11 @@ The following app will calculate the Black-Scholes European call option price fo
 </ul>
 
 
-<div class="org-src-container">
-<pre class="src src-R">```{r, echo=<span style="color: #66d9ef;">FALSE</span>, message=<span style="color: #66d9ef;">FALSE</span>, warning=<span style="color: #66d9ef;">FALSE</span>}
-#{{{
-sidebarLayout(
-    sidebarPanel(
-
-        div(style="height: 75px;", numericInput("Stock", "Present Stock Price", min = .01, max = 2000, value = 50, step = .05)),
-        div(style="height: 75px;", numericInput("Vol", "Annualized Volatility", min = .01, max = 20, value = 0.20, step = .01)),
-        div(style="height: 75px;", numericInput("Strike", "Strike Price", min = .01, max = 1, value = 52, step = .05)),
-        div(style="height: 75px;", numericInput("Rf", "Risk Free Rate", min = 0.001, max = 0.5, value = 0.01, step = .001)),
-        div(style="height: 75px;", numericInput("Time", "Years to Expiration", min = 0.01, max = 50, value = 1, step = .01)),
-        div(style="height: 75px;", numericInput("Div", "Dividend Yield", min = 0, max = 1, value = 0, step = .01))#,
-        ## div(style="height: 75px;", radioButtons("out", "Value to See", choices = list("Call Price" = 1, "d1" = 2, "d2" = 3), selected = 1)) 
-                  ),
-    mainPanel(
-
-        renderPlot({
-            stock <span style="color: #fd971f;">&lt;-</span> input$Stock
-            vol <span style="color: #fd971f;">&lt;-</span> input$Vol
-            strike <span style="color: #fd971f;">&lt;-</span> input$Strike
-            rf <span style="color: #fd971f;">&lt;-</span> input$Rf
-            time <span style="color: #fd971f;">&lt;-</span> input$Time
-            div <span style="color: #fd971f;">&lt;-</span> input$Div
-            ## adjustment for dividends
-            stock <span style="color: #fd971f;">&lt;-</span> stock * exp(-div * time)
-
-
-            d1 <span style="color: #fd971f;">&lt;-</span> (log(stock/strike) + (rf + (vol * vol) / 2) * time) / (vol * sqrt(time))
-            d2 <span style="color: #fd971f;">&lt;-</span> d1 - vol * sqrt(time)
-            C <span style="color: #fd971f;">&lt;-</span> stock * pnorm(d1) - strike * exp(-rf * time) * pnorm(d2)
-
-            #             <span style="color: #fb2874;">if</span> (input$out == 1){
-                plot(0, ylim = c(0,1), xlim = c(0,1), type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", main = "Black-Scholes Call Option Valuation")
-                text(x = 0.5, y = 0.5, labels = paste0("Call Premium = $", round(C, 2)), cex = 3)
-                ## text(x = 0.1, y = 0.95, labels = "Call Price", cex = 2)
-                text(x = 0.5, y = 0.3, labels = paste("d1 = ", round(d1, 5)))
-                text(x = 0.5, y = 0.2, labels = paste("d2 = ", round(d2, 5)))
-                #             } <span style="color: #fb2874;">else</span> {
-                #                 <span style="color: #fb2874;">if</span> (input$out == 2){
-                #                     plot(0, ylim = c(0,1), xlim = c(0,1), type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", main = "Black-Scholes Call Option Valuation")
-                #                 text(x = 0.5, y = 0.5, labels = paste(round(d1, 5)), cex = 5)
-                #                 text(x = 0.03, y = 0.95, labels = "d1", cex = 2)
-                #             } <span style="color: #fb2874;">else</span> {
-                #                 plot(0, ylim = c(0,1), xlim = c(0,1), type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", main = "Black-Scholes Call Option Valuation")
-                #                 text(x = 0.5, y = 0.5, labels = paste(round(d2, 5)), cex = 5)
-                #                 text(x = 0.03, y = 0.95, labels = "d2", cex = 2)
-                #             }
-                #             }
-
-        })
-)
-              )
-#}}}
-```
-</pre>
-</div>
+<iframe src="https://ztranche.com/investments/black_scholes/app1/" height="800px" width="100%"></iframe>
 </div>
 
-<div id="outline-container-org02ead6e" class="outline-3">
-<h3 id="org02ead6e"><span class="section-number-3">5.1.</span> Calculation in C</h3>
+<div id="outline-container-org878054c" class="outline-3">
+<h3 id="org878054c"><span class="section-number-3">5.1.</span> Calculation in C</h3>
 <div class="outline-text-3" id="text-5-1">
 <div class="org-src-container">
 <pre class="src src-C"><span style="color: #9c91e4; font-weight: bold;">#include</span> <span style="color: #e2c770;">&lt;stdio.h&gt;</span>
@@ -329,8 +274,8 @@ The value of the call is $14.96.
 </div>
 </div>
 
-<div id="outline-container-orge8c17f9" class="outline-2">
-<h2 id="orge8c17f9"><span class="section-number-2">6.</span> How Do We Calculate the Input Parameters</h2>
+<div id="outline-container-org8a0ccf3" class="outline-2">
+<h2 id="org8a0ccf3"><span class="section-number-2">6.</span> How Do We Calculate the Input Parameters</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 The present stock price is easily observable, and the exercise price and time to maturity are aspects of the option contract. The parameters which are less easily observed are:
@@ -343,8 +288,8 @@ The present stock price is easily observable, and the exercise price and time to
 </ul>
 </div>
 
-<div id="outline-container-org1ba79a4" class="outline-3">
-<h3 id="org1ba79a4"><span class="section-number-3">6.1.</span> The Risk Free Rate</h3>
+<div id="outline-container-orgfdd8636" class="outline-3">
+<h3 id="orgfdd8636"><span class="section-number-3">6.1.</span> The Risk Free Rate</h3>
 <div class="outline-text-3" id="text-6-1">
 <p>
 The risk free rate should be the annualized continuously-compounded rate on a default free security <b>with the same maturity</b> as the expiration data of the option.
@@ -356,8 +301,8 @@ The risk free rate should be the annualized continuously-compounded rate on a de
 </div>
 </div>
 
-<div id="outline-container-orgfa1db10" class="outline-3">
-<h3 id="orgfa1db10"><span class="section-number-3">6.2.</span> Dividends and Stock and Option Prices</h3>
+<div id="outline-container-org4c50763" class="outline-3">
+<h3 id="org4c50763"><span class="section-number-3">6.2.</span> Dividends and Stock and Option Prices</h3>
 <div class="outline-text-3" id="text-6-2">
 <p>
 Remember that a stock price is adjusted downward by the dividend amount when the dividend is paid.  For example, say before a \$1 dividend is paid the stock is \$50.  Immediately after the dividend is paid the stock's price will be \$49 (otherwise there would be an arbitrage).
@@ -374,8 +319,8 @@ Remember that a stock price is adjusted downward by the dividend amount when the
 </div>
 
 
-<div id="outline-container-orgdb704f3" class="outline-3">
-<h3 id="orgdb704f3"><span class="section-number-3">6.3.</span> Dividend Adjustments</h3>
+<div id="outline-container-org6f6676a" class="outline-3">
+<h3 id="org6f6676a"><span class="section-number-3">6.3.</span> Dividend Adjustments</h3>
 <div class="outline-text-3" id="text-6-3">
 <p>
 In the Black-Scholes world (where the option is European) we can reduce the stock price by the present value of all the dividends <b>during the life of the option</b>.
@@ -391,8 +336,8 @@ In the Black-Scholes world (where the option is European) we can reduce the stoc
 </div>
 </div>
 
-<div id="outline-container-org032a1f7" class="outline-3">
-<h3 id="org032a1f7"><span class="section-number-3">6.4.</span> Volatility</h3>
+<div id="outline-container-org80b232f" class="outline-3">
+<h3 id="org80b232f"><span class="section-number-3">6.4.</span> Volatility</h3>
 <div class="outline-text-3" id="text-6-4">
 <p>
 Volatility (the standard deviation of log-returns) is not directly observable, and it is the toughest input to determine.  Two common ways to estimate volatility:
@@ -412,8 +357,8 @@ So in the model's world, using historical volatility is fine, even though in the
 </p>
 </div>
 
-<div id="outline-container-org94e5319" class="outline-4">
-<h4 id="org94e5319"><span class="section-number-4">6.4.1.</span> Historical Data</h4>
+<div id="outline-container-orgb6166fd" class="outline-4">
+<h4 id="orgb6166fd"><span class="section-number-4">6.4.1.</span> Historical Data</h4>
 <div class="outline-text-4" id="text-6-4-1">
 <p>
 We can use historical stock price data to calculate continuously compounded returns (log-returns).  We can then take the standard deviation of these returns (using <b>STDEV()</b> in Excel, for example) and annualize the standard deviation, affording an estimate of annual volatility.
@@ -427,8 +372,8 @@ We can use historical stock price data to calculate continuously compounded retu
 </div>
 </div>
 
-<div id="outline-container-org96d95c6" class="outline-4">
-<h4 id="org96d95c6"><span class="section-number-4">6.4.2.</span> Annualizing the Standard Deviation</h4>
+<div id="outline-container-orgb568272" class="outline-4">
+<h4 id="orgb568272"><span class="section-number-4">6.4.2.</span> Annualizing the Standard Deviation</h4>
 <div class="outline-text-4" id="text-6-4-2">
 <p>
 Once we have the standard deviation of log returns, we must annualize it.  To do so we use the equation below, where \(\sigma_a\) and \(sigma_p\) are the annual and sample period standard deviations:
@@ -446,8 +391,8 @@ Once we have the standard deviation of log returns, we must annualize it.  To do
 </div>
 </div>
 
-<div id="outline-container-org5734679" class="outline-4">
-<h4 id="org5734679"><span class="section-number-4">6.4.3.</span> Interactive App</h4>
+<div id="outline-container-org71adcfe" class="outline-4">
+<h4 id="org71adcfe"><span class="section-number-4">6.4.3.</span> Interactive App</h4>
 <div class="outline-text-4" id="text-6-4-3">
 <ul class="org-ul">
 <li>The following app will calculate annualized historical volatility for any stock and choice of sampling frequency and length of history.</li>
@@ -455,40 +400,15 @@ Once we have the standard deviation of log returns, we must annualize it.  To do
 <li>Change the date range and see if the historical volatility changes &#x2013; remember Black-Scholes assumes constant volatility.</li>
 </ul>
 
-
-
-<div class="org-src-container">
-<pre class="src src-R">```{r, echo=<span style="color: #66d9ef;">FALSE</span>, message=<span style="color: #66d9ef;">FALSE</span>, warning=<span style="color: #66d9ef;">FALSE</span>, error = <span style="color: #66d9ef;">FALSE</span>}
-#{{{
-inputPanel(
-    textInput(inputId = "ticker2", label = "Stock Ticker", value = "XOM"),
-    dateRangeInput("range", "Date Range", start = "2015-01-05", end = Sys.Date())
-    )
-renderPlot({
-    devtools::install_github("joshuaulrich/quantmod", ref = "157_yahoo_502")
-    <span style="color: #fd971f;">library</span>(quantmod)
-    validate(
-        need(input$ticker2 != "", "Input a valid US stock ticker.")
-        )
-    stock2 <span style="color: #fd971f;">&lt;-</span> getSymbols(input$ticker2, from = input$range[1], to = input$range[2], auto.assign = <span style="color: #66d9ef;">FALSE</span>)
-    returns <span style="color: #fd971f;">&lt;-</span> Delt(Ad(stock2), type = 'log')[-1]
-    annSD <span style="color: #fd971f;">&lt;-</span> sd(returns) * sqrt(252) * 100
-
-    plot(0, ylim = c(0,1), xlim = c(0,1), type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", main = "Annualized Historical Volatility")
-    text(x = 0.5, y = 0.5, labels = paste(round(annSD, 2), "%", sep = ""), cex = 5)
-})
-#}}}
-```
-</pre>
-</div>
+<iframe src="https://ztranche.com/investments/black_scholes/app2/" height="800px" width="100%"></iframe>
 </div>
 </div>
 </div>
 
 
 
-<div id="outline-container-org168f200" class="outline-3">
-<h3 id="org168f200"><span class="section-number-3">6.5.</span> Extracting Volatility from Other Options</h3>
+<div id="outline-container-orge8a4762" class="outline-3">
+<h3 id="orge8a4762"><span class="section-number-3">6.5.</span> Extracting Volatility from Other Options</h3>
 <div class="outline-text-3" id="text-6-5">
 <p>
 We can also extract volatility from similar options and use that number as the volatility for our options.  
@@ -502,8 +422,8 @@ We can also extract volatility from similar options and use that number as the v
 </div>
 </div>
 
-<div id="outline-container-org9a457df" class="outline-3">
-<h3 id="org9a457df"><span class="section-number-3">6.6.</span> Implied vs Historical Volatility</h3>
+<div id="outline-container-org343fec3" class="outline-3">
+<h3 id="org343fec3"><span class="section-number-3">6.6.</span> Implied vs Historical Volatility</h3>
 <div class="outline-text-3" id="text-6-6">
 <p>
 This distinction is particularly important if there is an event which will take place during the life of the option, which hasn't happened historically.
@@ -516,63 +436,20 @@ This distinction is particularly important if there is an event which will take 
 </div>
 
 
-<div id="outline-container-orga0e04e0" class="outline-3">
-<h3 id="orga0e04e0"><span class="section-number-3">6.7.</span> Implied Volatility</h3>
+<div id="outline-container-org8d49e56" class="outline-3">
+<h3 id="org8d49e56"><span class="section-number-3">6.7.</span> Implied Volatility</h3>
 <div class="outline-text-3" id="text-6-7">
 <p>
 We can extract a volatility estimate from traded options by plugging the option price into the Black-Scholes formula and solving for volatility. This volatility estimate is called the option's 'implied volatility'.
 </p>
 
-
-<div class="org-src-container">
-<pre class="src src-R">```{r, echo=<span style="color: #66d9ef;">FALSE</span>, message=<span style="color: #66d9ef;">FALSE</span>, warning=<span style="color: #66d9ef;">FALSE</span>}
-#{{{
-sidebarLayout(
-    sidebarPanel(
-
-        div(style="height: 75px;", numericInput("Stock1", "Present Stock Price", min = .01, max = 2000, value = 50, step = .05)),
-        div(style="height: 75px;", numericInput("Option1", "Call Option Premium", min = .01, max = 20, value = 2, step = .01)),
-        div(style="height: 75px;", numericInput("Strike1", "Strike Price", min = .01, max = 1, value = 52, step = .05)),
-        div(style="height: 75px;", numericInput("Rf1", "Risk Free Rate", min = 0.001, max = 0.5, value = 0.01, step = .001)),
-        div(style="height: 75px;", numericInput("Time1", "Years to Expiration", min = 0.01, max = 50, value = 1, step = .01)),
-        div(style="height: 75px;", numericInput("Div1", "Dividend Yield", min = 0, max = 1, value = 0, step = .01))
-                  ),
-    mainPanel(
-
-        renderPlot({
-
-            stock1 <span style="color: #fd971f;">&lt;-</span> input$Stock1
-            option1 <span style="color: #fd971f;">&lt;-</span> input$Option1
-            strike1 <span style="color: #fd971f;">&lt;-</span> input$Strike1
-            rf1 <span style="color: #fd971f;">&lt;-</span> input$Rf1
-            time1 <span style="color: #fd971f;">&lt;-</span> input$Time1
-            div1 <span style="color: #fd971f;">&lt;-</span> input$Div1
-            ## adjustment for dividends
-            stock1 <span style="color: #fd971f;">&lt;-</span> stock1 * exp(-1 * div1 * time1)
-
-            <span style="color: #b6e63e;">call.func</span> <span style="color: #fd971f;">&lt;-</span> <span style="color: #fb2874;">function</span>(vol){ (stock1 * pnorm((log(stock1/strike1) + (rf1 + (vol * vol) / 2) * time1) / (vol * sqrt(time1))) - strike1 * exp(-rf1 * time1) * pnorm((log(stock1/strike1) + (rf1 + (vol * vol) / 2) * time1) / (vol * sqrt(time1)) - vol * sqrt(time1)) - option1)^2 }
-
-            ## L-BFGS-B seems to work.  Brent did not.  
-            result <span style="color: #fd971f;">&lt;-</span> optim(par = 0.1, fn = call.func, method = "L-BFGS-B", lower = 0, upper = 1000)
-
-            ## already annual 
-            vol.solution <span style="color: #fd971f;">&lt;-</span> result$par * 100
-
-                plot(0, ylim = c(0,1), xlim = c(0,1), type = "n", xaxt = "n", yaxt = "n", ylab = "", xlab = "", main = "Annualized Implied Volatility")
-                text(x = 0.5, y = 0.5, labels = paste(round(vol.solution, 2), "%", sep = ""), cex = 5)
-
-        })
-)
-              )
-#}}}
-```
-</pre>
-</div>
+<iframe src="https://ztranche.com/investments/black_scholes/app3/" height="800px" width="100%"></iframe>
 </div>
 </div>
 
-<div id="outline-container-orgbc66bd8" class="outline-3">
-<h3 id="orgbc66bd8"><span class="section-number-3">6.8.</span> Python Implementation</h3>
+
+<div id="outline-container-orgcc1dec0" class="outline-3">
+<h3 id="orgcc1dec0"><span class="section-number-3">6.8.</span> Python Implementation</h3>
 <div class="outline-text-3" id="text-6-8">
 <div class="org-src-container">
 <pre class="src src-python"><span style="color: #fb2874;">import</span> numpy <span style="color: #fb2874;">as</span> np
@@ -586,8 +463,8 @@ sidebarLayout(
 </div>
 </div>
 
-<div id="outline-container-orgee1a0f9" class="outline-2">
-<h2 id="orgee1a0f9"><span class="section-number-2">7.</span> But What about Put Options?</h2>
+<div id="outline-container-orgd0893ba" class="outline-2">
+<h2 id="orgd0893ba"><span class="section-number-2">7.</span> But What about Put Options?</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 So far we have only looked at call options, but can Black-Scholes also value put options?
@@ -609,7 +486,7 @@ However it is much more convenient to simply use <b><b>put-call parity</b></b>.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Matt Brigida, Ph.D.</p>
-<p class="date">Created: 2024-06-26 Wed 23:03</p>
+<p class="date">Created: 2024-06-30 Sun 21:53</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
